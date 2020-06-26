@@ -36,4 +36,4 @@ app.get("/reservation", (req, res) => {
 });
 
 
-app.listen(3001,()=>console.log('running'));
+app.listen(3000,()=>console.log('running'));

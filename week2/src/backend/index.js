@@ -8,20 +8,29 @@ const  reviewsRouter = require("./routes/reviews");
 
 app.get("/meals", (req, res) => {
   let correspondingMeals = mealsRouter;
-// Check if there is a max price 
+// Get meals with a max price 
   if (req.query.maxPrice){
     correspondingMeals = mealsRouter.filter((meal)=>{
                           return meal.price <= req.query.maxPrice ;
                           })
   }
-//  Check if there is a specific title
+//  Get meals with  a specific title
   if (req.query.title){
-    let reg = new RegExp(req.query.title,"i")
+    let reqTitle = new RegExp(req.query.title,"i")
     correspondingMeals= correspondingMeals.filter((meal)=>{
-                          return meal.title.match(reg);
+                          return meal.title.match(reqTitle);
                           })
 }
-res.send(correspondingMeals);
+
+//Get meals that has been created after a specific date
+  if (req.query.createdAfter){
+    let reqCreatedAfter = Date.parse(req.query.createdAfter);
+    correspondingMeals= correspondingMeals.filter((meal)=>{
+                          mealCreatedAfter =  Date.parse(meal.createdAt)
+                          return mealCreatedAfter - reqCreatedAfter > 0  ;
+                          })
+  }
+res.send(correspondingMeals); 
 });
 
 app.get("/meal/:id", (req, res) => {

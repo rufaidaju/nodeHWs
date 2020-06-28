@@ -30,6 +30,12 @@ app.get("/meals", (req, res) => {
                           return mealCreatedAfter - reqCreatedAfter > 0  ;
                           })
   }
+ 
+// Get specific number of meals
+  if (req.query.limit){
+    correspondingMeals = mealsRouter.slice(0,req.query.limit);
+    console.log(correspondingMeals)
+  }
 res.send(correspondingMeals); 
 });
 

@@ -4,7 +4,7 @@ const app = express();
 const  mealsRouter = require("./routes/meals");
 const  reservationsRouter = require("./routes/reservations");
 const  reviewsRouter = require("./routes/reviews");
-
+const utils = require("./utils.js")
 
 app.use("/meals",function(req,res,next){
   const meals =req.query;
@@ -12,14 +12,8 @@ app.use("/meals",function(req,res,next){
   const title=req.query.title ;
   const createdAfter =req.query.createdAfter;
   const limit =req.query.limit;
-  // Check if the object is empty
-  function isEmpty(obj) {
-    for (let key in obj) {
-      return false;
-    }
-    return true;
-  }
-  if (maxPrice || title || createdAfter|| limit ||  isEmpty(meals) ){
+
+  if (maxPrice || title || createdAfter|| limit ||  utils.isEmpty(meals) ){
     next()
   }else{
     res.send(404)
@@ -57,8 +51,11 @@ app.get("/meals", (req, res) => {
  
 // Get specific number of meals
   if (limit){
-    correspondingMeals = mealsRouter.slice(0,limit);
+      correspondingMeals = mealsRouter.slice(0,limit);
   }
+  if (limit == 0) {
+    correspondingMeals = [];
+    }
 
 // Check if there are no meals to show
   if( correspondingMeals.length == 0 ){

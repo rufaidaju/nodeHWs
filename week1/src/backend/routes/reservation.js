@@ -1,7 +1,8 @@
 const reservations = require("../data/reservations.json");
 
 let reservation = function(){
-    return  reservations[Math.floor(Math.random() * reservations.length)];
+    const randomIndex = Math.floor(Math.random() * reservations.length);
+    return  reservations[randomIndex];
 }
 module.exports = reservation();
 

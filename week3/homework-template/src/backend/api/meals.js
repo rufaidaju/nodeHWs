@@ -21,7 +21,7 @@ router.get("/:id", async (request, response) => {
 
 router.get("/", async (request, response) => {
   try {
-    const titles = await knex("meal").select("title");
+    const titles = await knex("meal").select("*");
     response.json(titles);
   } catch (error) {
     throw error;
@@ -53,6 +53,15 @@ router.put("/:id", async (request, response) => {
       });
     response.send(request.body); 
     
+  } catch (error) { 
+    throw error; 
+  }
+});
+
+router.delete("/:id", async (request, response) => {
+  try {
+     const meal =  await knex('meal').where('id',request.params.id).del()
+     response.send(`The meal wit id ${request.params.id} deleted`); 
   } catch (error) { 
     throw error; 
   }

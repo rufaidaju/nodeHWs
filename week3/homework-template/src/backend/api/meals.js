@@ -2,7 +2,7 @@ const express = require("express");
 const app = express();
 const router = express.Router();
 const knex = require("../database");
-
+const utils = require("../utils")
 
 router.get("/:id", async (request, response) => {
   try {
@@ -22,17 +22,27 @@ router.get("/:id", async (request, response) => {
 
 router.get("/", async (request, response) => {
   const maxPrice = Number(request.query.maxPrice);
-  const title=request.query.title ;
-  const createdAfter =request.query.createdAfter;
+  const availableReservations = request.query.availableReservations;
+  
   try {
-    let correspondingMeals= []
+    let correspondingMeals= [];
+
     if (maxPrice){
       correspondingMeals =await knex("meal").select("*").where(function () {
         this
           .orWhere('price', '<',maxPrice)
       })
-    }else{
-      correspondingMeals = await knex("meal").select("title");
+    }
+
+    if (availableReservations) {
+      correspondingMeals =await knex("meal").select("*").where({'availability':1})
+    }
+    
+    if ( utils.isEmpty(request.query)  ){
+      correspondingMeals= await knex("meal").select("title");
+    }
+    if( correspondingMeals.length == 0 ){
+      response.send("There are no meals to show ")
     }
 
     response.json(correspondingMeals); 

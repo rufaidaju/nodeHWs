@@ -3,6 +3,7 @@ const app = express();
 const router = express.Router();
 const knex = require("../database");
 
+
 router.get("/:id", async (request, response) => {
   try {
     const meal =  await knex.from('meal').select('*')
@@ -20,9 +21,21 @@ router.get("/:id", async (request, response) => {
 });
 
 router.get("/", async (request, response) => {
+  const maxPrice = Number(request.query.maxPrice);
+  const title=request.query.title ;
+  const createdAfter =request.query.createdAfter;
   try {
-    const titles = await knex("meal").select("*");
-    response.json(titles);
+    let correspondingMeals= []
+    if (maxPrice){
+      correspondingMeals =await knex("meal").select("*").where(function () {
+        this
+          .orWhere('price', '<',maxPrice)
+      })
+    }else{
+      correspondingMeals = await knex("meal").select("title");
+    }
+
+    response.json(correspondingMeals); 
   } catch (error) {
     throw error;
   }

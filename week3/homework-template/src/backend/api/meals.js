@@ -54,8 +54,6 @@ router.get("/", async (request, response) => {
       correspondingMeals = [];
     }
 
-    
-    
     if ( utils.isEmpty(request.query)  ){
       correspondingMeals= await knex("meal").select("title");
     }
@@ -75,13 +73,13 @@ router.post("/", async (request, response) => {
     let meal = await knex('meal').insert({title:request.body.title,
       maxNumberOfGuests:request.body.maxNumberOfGuests, 
       description:request.body.description, 
-      createdAt:request.body.createdAt, 
+      createdAt:new Date(request.body.createdAt) , 
       price:request.body.price})  
       response.send(meal)  
   } catch (error) {
-    throw error;   
+    throw error;     
   }
-});   
+});    
 
 router.put("/:id", async (request, response) => {
   try {
@@ -89,7 +87,7 @@ router.put("/:id", async (request, response) => {
       .update({title:request.body.title,
         maxNumberOfGuests:request.body.maxNumberOfGuests,
         description:request.body.description,
-        createdAt:request.body.createdAt,
+        createdAt:new Date(request.body.createdAt),
         price:request.body.price
       });
     response.send(request.body); 

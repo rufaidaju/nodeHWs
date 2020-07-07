@@ -24,6 +24,8 @@ router.get("/", async (request, response) => {
   const maxPrice = Number(request.query.maxPrice);
   const availableReservations = request.query.availableReservations;
   const title = request.query.title;
+  const limit =Number(request.query.limit);
+  console.log(limit,'liiiiiiiiimit')
   
   try {
     let correspondingMeals= [];
@@ -42,6 +44,17 @@ router.get("/", async (request, response) => {
     if (title){
       correspondingMeals =await knex("meal").select("*").where('title','like',`%${title}%`)
     }
+
+    if (limit){
+      let test = await knex("meal").select("*").limit(limit);
+        response.send(test) 
+    }
+
+    if (limit == 0){  
+      correspondingMeals = [];
+    }
+
+    
     
     if ( utils.isEmpty(request.query)  ){
       correspondingMeals= await knex("meal").select("title");

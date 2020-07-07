@@ -23,6 +23,7 @@ router.get("/:id", async (request, response) => {
 router.get("/", async (request, response) => {
   const maxPrice = Number(request.query.maxPrice);
   const availableReservations = request.query.availableReservations;
+  const title = request.query.title;
   
   try {
     let correspondingMeals= [];
@@ -37,6 +38,10 @@ router.get("/", async (request, response) => {
     if (availableReservations) {
       correspondingMeals =await knex("meal").select("*").where({'availability':1})
     }
+
+    if (title){
+      correspondingMeals =await knex("meal").select("*").where('title','like',`%${title}%`)
+    }
     
     if ( utils.isEmpty(request.query)  ){
       correspondingMeals= await knex("meal").select("title");
@@ -46,7 +51,7 @@ router.get("/", async (request, response) => {
     }
 
     response.json(correspondingMeals); 
-  } catch (error) {
+  } catch (error) { 
     throw error;
   }
 });
@@ -54,12 +59,12 @@ router.get("/", async (request, response) => {
 router.post("/", async (request, response) => {
   try {
     
-    await knex('meal').insert({title:request.body.title,
+    let meal = await knex('meal').insert({title:request.body.title,
       maxNumberOfGuests:request.body.maxNumberOfGuests, 
       description:request.body.description, 
       createdAt:request.body.createdAt, 
       price:request.body.price})  
-      response.send('response')  
+      response.send(meal)  
   } catch (error) {
     throw error;   
   }

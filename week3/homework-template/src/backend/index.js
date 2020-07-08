@@ -4,6 +4,8 @@ const router = express.Router();
 const path = require("path");
 
 const mealsRouter = require("./api/meals");
+const reservationsRouter = require("./api/reservations.js");
+
 
 const port = process.env.PORT || 3000;
 
@@ -18,6 +20,8 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
 router.use("/meals", mealsRouter);
+router.use("/reservations", reservationsRouter);
+
 
 app.use("/api", router);
 
@@ -27,7 +31,7 @@ app.use("/api", router);
 app.get("/*", function (req, res) {
   res.sendFile(path.join(__dirname, "./../frontend/index.html"), function (
     err
-  ) {
+  ) { 
     if (err) {
       res.status(500).send(err);
     }

@@ -41,11 +41,26 @@ router.get("/:id", async (request, response) => {
       let reservation = await knex('reservation').insert({
         name:request.body.name, 
         email:request.body.email, 
-        meal_id:Number(request.body.meal_id) , 
+        meal_id:Number(request.body.meal_id) 
         })  
         response.send(reservation)  
     } catch (error) {
       throw error;     
     }
-  });    
+  }); 
+  
+  router.put("/:id", async (request, response) => {
+    try {
+      const reservation =  await knex('reservation').where('id',request.params.id)
+        .update({
+        name:request.body.name, 
+        email:request.body.email, 
+        meal_id:Number(request.body.meal_id) , 
+        });
+      response.send(request.body); 
+      
+    } catch (error) { 
+      throw error; 
+    }
+  });
   module.exports = router;    

@@ -24,8 +24,8 @@ router.get("/", async (request, response) => {
   const maxPrice = Number(request.query.maxPrice);
   const availableReservations = request.query.availableReservations;
   const title = request.query.title;
+  const createdAfter = new Date(request.query.createdAfter);
   const limit =Number(request.query.limit);
-  console.log(limit,'liiiiiiiiimit')
   
   try {
     let correspondingMeals= [];
@@ -45,11 +45,15 @@ router.get("/", async (request, response) => {
       correspondingMeals =await knex("meal").select("*").where('title','like',`%${title}%`)
     }
 
+    if (createdAfter){
+      correspondingMeals = await knex("meal").select("*").where('createdAt','>',createdAfter)
+    }
+
     if (limit){
       let test = await knex("meal").select("*").limit(limit);
         response.send(test) 
     }
-
+  
     if (limit == 0){  
       correspondingMeals = [];
     }

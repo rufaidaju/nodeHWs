@@ -35,4 +35,17 @@ router.get("/:id", async (request, response) => {
     }
   });
 
+  router.post("/", async (request, response) => {
+    try {
+      
+      let reservation = await knex('reservation').insert({
+        name:request.body.name, 
+        email:request.body.email, 
+        meal_id:Number(request.body.meal_id) , 
+        })  
+        response.send(reservation)  
+    } catch (error) {
+      throw error;     
+    }
+  });    
   module.exports = router;    

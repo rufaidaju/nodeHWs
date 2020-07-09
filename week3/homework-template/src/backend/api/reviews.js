@@ -35,34 +35,35 @@ router.get("/:id", async (request, response) => {
     }
   });
 
-//   router.post("/", async (request, response) => {
-//     try {
-      
-//       let reservation = await knex('reservation').insert({
-//         name:request.body.name, 
-//         email:request.body.email, 
-//         meal_id:Number(request.body.meal_id) 
-//         })  
-//         response.send(reservation)  
-//     } catch (error) {
-//       throw error;     
-//     }
-//   }); 
+  router.post("/", async (request, response) => {
+    try {
+      let review = await knex('review').insert({
+        numberOfStars:request.body.numberOfStars, 
+        content:request.body.content, 
+        createdAt:new Date(request.body.createdAt) , 
+        meal_id:Number(request.body.meal_id) 
+        })  
+        response.send(review);  
+    } catch (error) {
+      throw error;     
+    }
+  }); 
   
-//   router.put("/:id", async (request, response) => {
-//     try {
-//       const reservation =  await knex('reservation').where('id',request.params.id)
-//         .update({
-//         name:request.body.name, 
-//         email:request.body.email, 
-//         meal_id:Number(request.body.meal_id) , 
-//         });
-//       response.send(request.body); 
-      
-//     } catch (error) { 
-//       throw error; 
-//     }
-//   }); 
+  router.put("/:id", async (request, response) => {
+    try {
+      const review =  await knex('review').where('id',request.params.id)
+        .update({
+            numberOfStars:request.body.numberOfStars, 
+            content:request.body.content, 
+            createdAt:new Date(request.body.createdAt) , 
+            meal_id:Number(request.body.meal_id)  
+            }); 
+
+            response.send(request.body)  ; 
+    } catch (error) { 
+      throw error; 
+    }
+  }); 
 
 //   router.delete("/:id", async (request, response) => {
 //     try {

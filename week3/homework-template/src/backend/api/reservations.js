@@ -67,10 +67,10 @@ router.get("/:id", async (request, response) => {
   router.delete("/:id", async (request, response) => {
     try {
        const reservation =  await knex('reservation').where('id',request.params.id).del()
-       response.send(`The reservation wit id ${request.params.id} deleted`); 
+       response.send(`The reservation with id ${request.params.id} deleted`); 
     } catch (error) { 
       throw error; 
     }
   });
-  
+
   module.exports = router;    

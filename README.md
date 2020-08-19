@@ -21,4 +21,5 @@ Creating and connecting both the backend api and the frontend html, css and java
  -Connecting the frontend to the api
  -Using fetch to GET, POST, PUT and DELETE data from api
  -Clientside routing
- -Deploy to heroku
+ -Deploy to heroku: https://dev-meal-sharing.herokuapp.com/
+ -Meal-sharing repository: https://github.com/rufaidaju/meal-sharing
